@@ -1,0 +1,7 @@
+# Ignore node_modules (dependencies)
+node_modules/
+
+# Allow lockfiles and package manifest
+!.gitignore
+!package.json
+!npm-shrinkwrap.json

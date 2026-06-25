@@ -1,0 +1,14 @@
+# =============================================================================
+# .gitattributes — Git attribute configuration for pi-agent-enterprise
+# =============================================================================
+
+# Security: mark sensitive files as export-ignore (S1, S7)
+agent/auth.json export-ignore
+.env export-ignore
+
+# Scripts: use diff=script for highlighted review in PRs (S6)
+setup.sh diff=script
+agent/skills/rag-query/rag_client.py diff=script
+
+# Markdown: detect as linguist-documentation for GitHub stats
+*.md linguist-detectable=true
