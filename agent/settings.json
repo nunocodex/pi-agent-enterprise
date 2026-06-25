@@ -1,0 +1,17 @@
+{
+  "lastChangelogVersion": "0.80.2",
+  "theme": "dark",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "xhigh",
+  "temperature": 0,
+  "confirmDangerousCommands": true,
+  "defaultProjectTrust": "ask",
+  "git": {
+    "autoCommit": false
+  },
+  "packages": [
+    "npm:@hk_net/pi-thinking-command",
+    "npm:pi-prompt-template-model"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "pi-extensions",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "pi-extensions",
+      "dependencies": {
+        "@hk_net/pi-thinking-command": "^0.1.3",
+        "pi-prompt-template-model": "^0.9.3"
+      }
+    },
+    "node_modules/@hk_net/pi-thinking-command": {
+      "version": "0.1.3",
+      "resolved": "https://registry.npmjs.org/@hk_net/pi-thinking-command/-/pi-thinking-command-0.1.3.tgz",
+      "integrity": "sha512-MvIFN6ahLRXj8wLX+UIc+lngXJ1QVPCWdqSwQK5i+E49A76An/bBR6JQQniRL3fsBaRSTiyYOZAwwunrtJHZvA==",
+      "license": "EUPL-1.2",
+      "peerDependencies": {
+        "@earendil-works/pi-coding-agent": ">=0.80.2",
+        "@earendil-works/pi-tui": ">=0.80.2"
+      }
+    },
+    "node_modules/pi-prompt-template-model": {
+      "version": "0.9.3",
+      "resolved": "https://registry.npmjs.org/pi-prompt-template-model/-/pi-prompt-template-model-0.9.3.tgz",
+      "integrity": "sha512-8nv3e+hIlTJMIHw7xnCOedYzMVdF+prm6BNLKinNg8mPSQ7sb48OCeBLv1fdVbDrjO5ei+J9QvaAWHZbdzWzkQ==",
+      "license": "MIT",
+      "dependencies": {
+        "typebox": "^1.1.24"
+      }
+    },
+    "node_modules/typebox": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/typebox/-/typebox-1.3.0.tgz",
+      "integrity": "sha512-3HaX5iZ13wSzcLSflDH1UJwaXnRghtc8LhQtKnq8qnlcnZvmGOpBOM6rY9PdyPBKNOYBpDHfE9r6BmI41fvp4g==",
+      "license": "MIT"
+    }
+  }
+}

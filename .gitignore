@@ -1,0 +1,36 @@
+# === SECRETS (project root) ===
+.env
+
+# === SECRETS (agent) ===
+agent/auth.json
+*.pem
+*.key
+
+# === SESSIONS (conversation logs) ===
+*.jsonl
+agent/sessions/
+
+# === BINARIES (pi auto-installs rg/fd) ===
+agent/bin/
+
+# === DEPENDENCIES ===
+venv/
+agent/npm/node_modules/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === EPHEMERAL WORKSPACE ===
+tmp/
+state/
+
+# === NPM submodule self-ignore (exists at agent/npm/.gitignore) ===
+# agent/npm/.gitignore already covers that directory

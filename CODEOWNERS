@@ -1,0 +1,21 @@
+# CODEOWNERS — Restrict sensitive paths to maintainers
+#
+# Rules are matched in order; the last matching rule wins.
+# @nunocodex is the default maintainer.
+
+# Skills and prompts — code injection surface (S5, S8)
+agent/skills/**      @nunocodex
+agent/prompts/**      @nunocodex
+
+# Security-critical configuration (S9)
+.gitignore            @nunocodex
+.gitattributes        @nunocodex
+.pre-commit-config.yaml @nunocodex
+CODEOWNERS            @nunocodex
+SECURITY.md           @nunocodex
+
+# CI/CD pipeline integrity
+.github/**            @nunocodex
+
+# Default for everything else
+*                     @nunocodex
