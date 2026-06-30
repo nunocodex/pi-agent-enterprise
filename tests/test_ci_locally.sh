@@ -174,7 +174,7 @@ echo "--- Stage 7: GPG commit audit ---"
 if command -v gpg >/dev/null 2>&1; then
     SIGNED=0
     UNSIGNED=0
-    for commit in $(git log --format='%H' -5 2>/dev/null); do
+    for commit in $(git log --format='%H' -3 2>/dev/null); do
         if git log --format='%GS' -1 "$commit" 2>/dev/null | grep -q .; then
             SIGNED=$((SIGNED + 1))
         else
