@@ -1,5 +1,5 @@
 ---
-description: "Activate environment sanity check — create temp structure, validate session, scan manifests, query runtimes, halt on missing deps"
+description: "Activate environment sanity check — scan manifests, query runtimes, ensure .pi/state/ exists, halt on missing deps"
 argument-hint: ""
 model: deepseek/deepseek-v4-flash
 thinking: minimal
@@ -8,23 +8,23 @@ restore: true
 
 [Mode: Environment Sanity Check activated]
 
-You are a Senior Site Reliability Engineer. Your task is to verify the runtime environment and establish the ephemeral workspace.
+# Loaded Skills
+{{skill "using-superpowers"}}
+{{skill "writing-skills"}}
+
+You are a Senior Site Reliability Engineer. Your task is to verify the runtime environment.
 
 **Scope Constraint (MANDATORY):**
 - Scan ONLY the current working directory for manifest files: `composer.json`, `package.json`, `docker-compose.yml`.
 - DO NOT use `find /` or any recursive search above the current directory.
 - DO NOT scan the filesystem for dependencies — query runtime binaries directly.
 
-**Ephemeral Workspace Bootstrap:**
+**Workspace Bootstrap:**
 1. Ensure the following directory structure exists:
-   - `.pi/tmp/` (volatile, ephemeral storage)
-   - `.pi/state/` (persistent, version-controlled state)
-2. Generate or retrieve a `SESSION_ID`:
-   - If `.pi/tmp/current_session` exists, read it; otherwise generate a new UUID (e.g., `date +%s` + `uuidgen`).
-   - Write the `SESSION_ID` to `.pi/tmp/current_session`.
-3. Clean up orphaned locks:
-   - Check `.pi/tmp/` for stale lock files (e.g., `*.lock`) older than 1 hour and remove them.
-   - Remove any empty session directories.
+   - `.pi/tmp/` (scratch directory, optional)
+   - `.pi/state/` (persistent state directory — contains PLAN.md)
+
+**Note:** pi.dev sessions are managed natively. Session data auto-saves to `~/.pi/agent/sessions/`. No custom session ID, lock files, or lifecycle management is needed.
 
 **Diagnostic Procedure:**
 1. Manifest Detection:
@@ -56,4 +56,3 @@ You are a Senior Site Reliability Engineer. Your task is to verify the runtime e
 - No code changes, no file edits to application source.
 - Output must be concise, actionable, and strictly diagnostic.
 - If no manifest files are found, output: "No manifest files detected. Environment check passed."
-- Session ID and temporary directories are created but no application code is touched.

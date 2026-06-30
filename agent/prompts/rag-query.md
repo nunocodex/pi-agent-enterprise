@@ -1,5 +1,6 @@
 ---
 description: "Direct RAG query — retrieve documentation from RAG server"
+argument-hint: "<query>"
 model: deepseek/deepseek-v4-flash
 thinking: low
 skill: rag-query

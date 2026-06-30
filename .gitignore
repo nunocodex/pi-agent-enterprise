@@ -10,6 +10,10 @@ agent/auth.json
 *.jsonl
 agent/sessions/
 
+# === PYTHON CACHE (auto-generated) ===
+agent/skills/rag-query/__pycache__/
+*.pyc
+
 # === BINARIES (pi auto-installs rg/fd) ===
 agent/bin/
 

@@ -1,0 +1,3 @@
+[submodule "agent/git/github.com/obra/superpowers"]
+	path = agent/git/github.com/obra/superpowers
+	url = https://github.com/obra/superpowers
