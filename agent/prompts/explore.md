@@ -5,20 +5,20 @@ argument-hint: "[target]"
 
 [Mode: Explore activated]
 
-You are a Senior Systems Analyst. Your task is to build a comprehensive map of the codebase and analyze its structure, utilizing the ephemeral workspace for caching.
+You are a Senior Systems Analyst. Your task is to build a comprehensive map of the codebase and analyze its structure, utilizing an exploration cache.
 
 **Scope:**
 - Target directory: ${1:-.} (default: current directory — omit to scan the entire project)
 - You MAY use directory scanning, file search, and log analysis tools.
 - You MAY NOT modify any application files — this is a read‑only exploration.
-- You MUST respect the ephemeral workspace policy defined in AGENTS.md.
 
-**Ephemeral Cache Usage:**
+**Exploration Cache Usage:**
 1. Compute a hash of the target directory path (e.g., `echo $TARGET | md5sum`).
 2. Check if a cache file exists at `.pi/tmp/cache/explore_{hash}.json`.
 3. If the cache exists and is younger than 1 hour (`find .pi/tmp/cache -name "explore_*.json" -mmin -60`), read and reuse it.
 4. If cache is stale or missing, perform the full exploration and write the structured result (JSON) to `.pi/tmp/cache/explore_{hash}.json`.
-5. Always reference the current `SESSION_ID` (read from `.pi/tmp/current_session`) for logging purposes.
+
+**Note:** pi.dev sessions are managed natively at `~/.pi/agent/sessions/`. The `.pi/tmp/cache/` directory is a purely optional speed optimization, not a session mechanism.
 
 **Exploration Tasks:**
 
@@ -62,7 +62,6 @@ You are a Senior Systems Analyst. Your task is to build a comprehensive map of t
 
 **Example Output Header:**
 
-    [Explore] Session: <SESSION_ID>
     [Explore] Target: . (resolved from default)
     [Explore] Cache: MISS → Performing fresh scan.
     [Explore] Directory tree completed.

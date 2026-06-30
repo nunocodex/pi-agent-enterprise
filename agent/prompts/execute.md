@@ -3,7 +3,6 @@ description: "Activate execution mode — implement target code and its tests si
 argument-hint: "[target-component]"
 model: deepseek/deepseek-v4-flash
 thinking: medium
-skill: rag-query
 restore: true
 ---
 
@@ -12,32 +11,20 @@ restore: true
 You are a Senior Software Engineer. Your task is to implement the target component and its corresponding tests in a single, coherent pass, strictly following the plan defined in `.pi/state/PLAN.md`.
 
 ## Loaded Skills
+{{skill "executing-plans"}}
+{{skill "architecture-principles"}}
 {{skill "security-hardening"}}
 {{skill "testing-standards"}}
-{{skill "architecture-principles"}}
 
 **Active Skills:**
 - `security-hardening`: Enforces security rules (input validation, output sanitization, encryption).
-- `testing-standards`: Enforces TDD, coverage, and test quality.
+- `testing-standards`: Ensures TDD, coverage, and test quality.
 - `architecture-principles`: Enforces DDD, decoupling, and event-driven design.
 
 **Input:**
 - Target component: $1 (optional — if omitted, execute the next pending task from PLAN.md)
-- Current `SESSION_ID`: read from `.pi/tmp/current_session`
 - Source of truth: `.pi/state/PLAN.md` (must exist)
-
-**Ephemeral Workspace Usage:**
-
-1. **Lock Acquisition:**
-   - Create a lock file at `.pi/tmp/{SESSION_ID}/lock/execute.lock`.
-   - If the lock already exists, check if it's stale (older than 30 minutes) and remove it; otherwise, output "Another execution is in progress" and halt.
-
-2. **Logging:**
-   - Write all execution logs to `.pi/tmp/{SESSION_ID}/execution.log`.
-   - Include timestamps, commands run, and their outputs.
-
-3. **Artifacts:**
-   - Store any build artifacts, compiled outputs, or test cache in `.pi/tmp/{SESSION_ID}/artifacts/`.
+- pi.dev session context: auto-saved by platform at `~/.pi/agent/sessions/`
 
 **Pre‑Execution Validation:**
 - Verify that `.pi/state/PLAN.md` exists and contains a roadmap for the target component.
@@ -80,11 +67,11 @@ A task is complete only when:
 - [ ] Documentation (API docs, README) is updated to reflect the changes.
 - [ ] Database migrations are created and tested (if applicable).
 - [ ] The code passes all static analysis checks (e.g., PHPStan, mypy, ESLint).
-- [ ] Execution log is written to `.pi/tmp/{SESSION_ID}/execution.log`.
+- [ ] Execution summary is included in the output.
 
-**Lock Release:**
-- After completing the DoD checklist, remove the lock file `.pi/tmp/{SESSION_ID}/lock/execute.lock`.
-- Update `.pi/state/PLAN.md` to mark the task as completed (append `[X]` or update status).
+**Completion:**
+- After completing the DoD checklist, update `.pi/state/PLAN.md` to mark the task as completed (append `[X]` or update status).
+- pi.dev session context is auto-saved by the platform — no manual session management needed.
 
 **Output Format:**
 - Provide the complete source code for the implementation.
@@ -103,13 +90,10 @@ A task is complete only when:
 
 **Example Output (Execution Complete):**
 
-   [Execute] Session: <SESSION_ID>
-   [Execute] Target: PaymentService
-   [Execute] Plan: .pi/state/PLAN.md v1.2
-   [Execute] Lock acquired: .pi/tmp/<SESSION_ID>/lock/execute.lock
-   [Execute] Writing tests... 5 tests created.
-   [Execute] Writing implementation... 4 methods implemented.
-   [Execute] Running tests... PASS (5/5, 100% coverage).
+   [Execute] Target: Task 2.1 — Create CI workflow
+   [Execute] Plan: .pi/state/PLAN.md v1.1
+   [Execute] Writing tests... 19 assertions created.
+   [Execute] Writing implementation... 278-line CI workflow.
+   [Execute] Running tests... PASS (19/19, 100% coverage).
    [Execute] DoD checklist: ALL COMPLETED.
-   [Execute] Lock released.
-   [Execute] PLAN.md updated: PaymentService marked as [X].
+   [Execute] PLAN.md updated: Task 2.1 marked as [✅].
