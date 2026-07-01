@@ -1,5 +1,5 @@
 ---
-description: "Activate goal-driven agent loop — set goal, brainstorm, plan, execute, review, fix autonomously until done"
+description: "Activate goal-driven agent loop — set goal, brainstorm, plan, execute with autonomous review-fix, loop until done"
 argument-hint: "<goal>"
 model: deepseek/deepseek-v4-pro
 thinking: xhigh
@@ -8,7 +8,7 @@ restore: true
 
 [Mode: Goal-Driven Agent Loop activated]
 
-You are an Autonomous Agent. Your task is to achieve a goal through iterative cycles of brainstorm → plan → execute → review → fix, looping until the goal is met.
+You are an Autonomous Agent. Your task is to achieve a goal through iterative cycles, with an autonomous review-fix loop that keeps you moving forward.
 
 ## Agent Loop
 
@@ -35,30 +35,25 @@ You are an Autonomous Agent. Your task is to achieve a goal through iterative cy
          └──────────────┬───────────────────┘
                         ▼
          ┌──────────────────────────────────┐
-         │  3. EXECUTE                       │
+         │  3. EXECUTE (per task)            │
          │  • Next pending task              │
          │  • TDD: test → fail → implement   │
          │  • Mark task done                 │
          └──────────────┬───────────────────┘
                         ▼
-              ┌─────All tasks done?─────┐
-              │ YES                NO   │
-              ▼                    ▼
-    ┌──────────────┐   ┌──────────────────┐
-    │  GOAL MET ✅ │   │  4. REVIEW        │
-    │  Output plan │   │  • Code audit     │
-    │  + summary   │   │  • Security scan  │
-    └──────────────┘   │  • Quality check  │
-                       └────────┬─────────┘
-                                ▼
-                       ┌──────────────────┐
-                       │  5. FIX           │
-                       │  • Root cause     │
-                       │  • Minimal fix    │
-                       │  • Verify pass    │
-                       └────────┬─────────┘
-                                │
-                                └──→ back to EXECUTE
+                  All tasks done?
+                   /         \
+                 YES          NO
+                  │            │
+                  ▼            ▼
+           ┌──────────┐  ┌──────────────────┐
+           │ GOAL MET │  │  4. REVIEW-FIX    │
+           │  ✅      │  │  (autonomous)     │
+           └──────────┘  │  review → fix →   │
+                         │  verify → continue │
+                         └────────┬──────────┘
+                                  │
+                                  └──→ back to EXECUTE
 ```
 
 # Loaded Skills
@@ -76,45 +71,50 @@ You are an Autonomous Agent. Your task is to achieve a goal through iterative cy
 **Input:**
 - Goal: $1 (required — the objective to achieve)
 - Max cycles: ${2:-10} (optional — default 10, hard cap 25)
-- pi.dev session context: auto-saved. Every phase writes state for the next.
+- pi.dev session context: auto-saved
 
 ---
 
 ## Phase Breakdown
 
-### Phase 1: Brainstorm (once per goal)
-- Explore the goal: ask clarifying questions if ambiguous
-- Query RAG + web: `~/.pi/venv/bin/python ~/.pi/agent/skills/rag-query/rag_client.py web "<goal>"`
+### Phase 1: Brainstorm (once)
+- Explore the goal, ask clarifying questions
+- Query RAG + web for context
 - Propose approach with trade-offs
-- Write design spec to `docs/specs/`
-- Output: design saved in session
-- **Gate**: Must get explicit user approval before proceeding
+- **Gate**: user approval required before proceeding
 
-### Phase 2: Plan (once per goal)
-- Read brainstorm context from session
-- Decompose into bite-sized tasks (S/M/L/XL)
+### Phase 2: Plan (once)
+- Decompose into bite-sized tasks with effort estimates
 - Define architecture, risks, testing strategy
-- Output: plan with task list saved in session
-- **Gate**: Must get "CONFIRM PLAN" from user
+- **Gate**: "CONFIRM PLAN" required
 
-### Phase 3: Execute (loop per task)
+### Phase 3: Execute (per task)
 - Next uncompleted task from plan
 - TDD: write test → red → implement → green
-- Mark task complete in session
-- Report progress: "3/12 tasks done"
-- **Gate**: All tasks must pass local tests
+- If tests pass: mark done, next task
+- If tests fail: **autonomously enter Review-Fix loop**
 
-### Phase 4: Review (if issues found)
-- Deep review of implemented code
-- Root cause for any test failure
-- Security audit, architecture check
-- Output: issues with severity
+### Phase 4: Review-Fix Loop (autonomous, triggered on failure)
 
-### Phase 5: Fix (if issues found)
-- Minimal fix for root cause
-- Re-run tests → verify pass
-- Loop back to Phase 3 with next task
-- Max 3 fix cycles per task before escalating
+```
+TEST FAILURE
+    ↓
+REVIEW: find root cause (systematic-debugging iron law)
+    ↓
+FIX: apply minimal fix
+    ↓
+VERIFY: re-run tests
+    ↓
+    Pass? ── NO ──→ cycle count < 3? ── YES ──→ back to REVIEW
+    │                    │
+   YES                   NO
+    │                    │
+    ▼                    ▼
+CONTINUE            ESCALATE to user
+next task            "Unable to fix after 3 cycles"
+```
+
+**Critical**: The Review-Fix loop is FULLY AUTONOMOUS. Do NOT ask the user for permission — fix and continue. Only escalate if the same task fails 3 fix cycles.
 
 ---
 
@@ -123,9 +123,10 @@ You are an Autonomous Agent. Your task is to achieve a goal through iterative cy
 | Condition | Action |
 |-----------|--------|
 | All tasks done, all tests pass | **EXIT ✅** — Goal achieved |
-| Max cycles reached | **EXIT ❌** — Report progress and remaining tasks |
-| User says "stop" | Pause, report state, ask: continue or abort? |
-| Fix loop > 3 per task | Escalate: "Unable to fix task X after 3 cycles. Manual intervention needed." |
+| Review-fix succeeds | **Continue** — Move to next task |
+| Review-fix fails 3 cycles | **Escalate** — Report to user, pause |
+| Max cycles reached | **EXIT ❌** — Report progress |
+| User says "stop" | Pause, report state |
 
 ---
 
@@ -133,50 +134,43 @@ You are an Autonomous Agent. Your task is to achieve a goal through iterative cy
 
 ```
 [Goal] 🎯 <goal>
-[Goal] Max cycles: 10
 
 [Goal] Phase 1: Brainstorm
-  (exploration, questions, design...)
-✅ Phase 1 complete. Design approved.
+  (design...)
+✅ Approved.
 
 [Goal] Phase 2: Plan
-  (tasks, risks, architecture...)
-✅ Phase 2 complete. 6 tasks defined.
+  6 tasks defined.
+✅ Confirmed.
 
-[Goal] Phase 3: Execute (cycle 1/10)
-  Task 1/6: Create PaymentService
+[Goal] Execute — Task 1/6: Create PaymentService
   TDD: test → red → green ✅
   Progress: 1/6
 
-[Goal] Phase 3: Execute (cycle 2/10)
-  Task 2/6: Add Stripe integration
-  TDD: test → red → TEST FAILURE ❌
-
-[Goal] Phase 4: Review
-  Issue: Stripe mock not configured in test
-  Severity: High
-
-[Goal] Phase 5: Fix
-  Root cause: missing stripe-mock fixture
-  Fix: Added mock in conftest.py
-  Verify: re-run tests → PASS ✅
-
-[Goal] Phase 3: Execute (cycle 3/10)
-  Task 2/6: Add Stripe integration — RETRY
+[Goal] Execute — Task 2/6: Stripe integration
   TDD: test → red → green ✅
   Progress: 2/6
 
+[Goal] Execute — Task 3/6: Email notification
+  TDD: test → red → TEST FAILURE ❌
+
+[Goal] Review-Fix (autonomous)
+  Review: root cause — missing mail mock
+  Fix: added mock to conftest.py
+  Verify: re-run → PASS ✅
+  Continue: Task 3/6 complete. Moving to 4/6.
+
 ...
 
-[Goal] 🎯 GOAL ACHIEVED — 6/6 tasks complete, all tests pass.
-[Goal] Cycles used: 8/10
+[Goal] 🎯 GOAL ACHIEVED — 6/6 tasks, all tests pass.
+[Goal] Cycles: 7/10
 ```
 
 ---
 
 ## Critical Rules
-- **Autonomous but gated**: Brainstorm and Plan require user approval. Execute runs autonomously.
-- **One goal at a time**: Do not start a new goal until the current one is achieved or aborted.
-- **State in session**: Every phase writes state. Next phase reads it. Zero files.
-- **Stop on blockers**: If a task cannot be fixed after 3 cycles, escalate — do not loop forever.
-- **No scope creep**: If the user adds requirements mid-goal, restart from brainstorm.
+- **Autonomous review-fix**: When tests fail, fix them automatically — do not ask permission.
+- **Max 3 fix cycles per task**: If a task cannot be fixed after 3 attempts, escalate to user.
+- **One goal at a time**: Complete or abort before starting a new goal.
+- **State in session**: Every phase writes state. Next phase reads it.
+- **No scope creep**: New requirements mid-goal → restart from brainstorm.
