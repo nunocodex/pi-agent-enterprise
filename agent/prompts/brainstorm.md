@@ -41,7 +41,7 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 1. **Explore project context:**
    - Check existing files, documentation, recent commits
-   - Read `.pi/state/PLAN.md` for current project state and roadmap
+   - Read pi.dev session context for current project state (plan from `/plan`)
    - Query RAG server for relevant technical context:
      ```
      ~/.pi/venv/bin/python ~/.pi/agent/skills/rag-query/rag_client.py "<query>"
@@ -99,7 +99,7 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 When the spec is approved, announce:
 > "Design approved. Use `/plan <feature-name>` to create the implementation plan."
 
-The brainstorm context (exploration, questions, decisions, spec) persists in the pi.dev session memory. The `/plan` command will read this context to create a structured PLAN.md.
+The brainstorm context (exploration, questions, decisions, spec) persists in the pi.dev session memory. The `/plan` command will read this context to create a structured plan.
 
 **Output Format:**
 

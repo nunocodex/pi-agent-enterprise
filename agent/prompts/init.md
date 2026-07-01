@@ -1,5 +1,5 @@
 ---
-description: "Activate environment sanity check — scan manifests, query runtimes, ensure .pi/state/ exists, halt on missing deps"
+description: "Activate environment sanity check — scan manifests, query runtimes, halt on missing deps"
 argument-hint: ""
 model: deepseek/deepseek-v4-flash
 thinking: minimal
@@ -22,7 +22,6 @@ You are a Senior Site Reliability Engineer. Your task is to verify the runtime e
 **Workspace Bootstrap:**
 1. Ensure the following directory structure exists:
    - `.pi/tmp/` (scratch directory, optional)
-   - `.pi/state/` (persistent state directory — contains PLAN.md)
 
 **Note:** pi.dev sessions are managed natively. Session data auto-saves to `~/.pi/agent/sessions/`. No custom session ID, lock files, or lifecycle management is needed.
 
