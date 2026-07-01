@@ -71,7 +71,10 @@ All state flows through pi.dev's native session system. No temp files, no locks,
 - **RAG Query** — Local knowledge base retrieval with hybrid search
 
 **14 Superpowers Skills** (via git submodule):
-brainstorming, writing-plans, executing-plans, subagent-driven-development, test-driven-development, dispatching-parallel-agents, systematic-debugging, receiving-code-review, requesting-code-review, verification-before-completion, finishing-a-development-branch, using-git-worktrees, using-superpowers, writing-skills
+brainstorming, writing-plans, executing-plans, subagent-driven-development,
+test-driven-development, dispatching-parallel-agents, systematic-debugging,
+receiving-code-review, requesting-code-review, verification-before-completion,
+finishing-a-development-branch, using-git-worktrees, using-superpowers, writing-skills
 
 ## Security
 
