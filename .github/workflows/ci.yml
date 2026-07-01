@@ -204,13 +204,9 @@ jobs:
       # Stage 8: Markdown lint
       # ----------------------------------------------------------------
       - name: Markdown lint
-        uses: DavidAnson/markdownlint-cli-action@v1
-        with:
-          config-file: .markdownlint.json
-          globs: |
-            *.md
-            agent/prompts/*.md
-            agent/skills/rag-query/*.md
+        run: |
+          npx -y markdownlint-cli '*.md' 'agent/prompts/*.md' --config .markdownlint.json --ignore-path .markdownlintignore
+        shell: bash
         continue-on-error: true
 
       # ----------------------------------------------------------------
