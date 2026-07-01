@@ -36,7 +36,10 @@ You are a Senior Software Engineer. Your task is to implement the target compone
 
 ## Session State
 
-Your implementation output is automatically saved in the pi.dev session. The task list, test results, and completion status all persist in the session. When you mark a task as completed, the `/test` and `/commit` commands read this state. No files are written — pi.dev handles all persistence.
+Your implementation output is automatically saved in the pi.dev session.
+The task list, test results, and completion status all persist in the session.
+When you mark a task as completed, the `/test` and `/commit` commands read this state.
+No files are written — pi.dev handles all persistence.
 
 **Pre‑Execution Validation:**
 - Verify that a plan exists in the current pi.dev session context.
