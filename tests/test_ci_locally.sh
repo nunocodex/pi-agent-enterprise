@@ -89,7 +89,7 @@ fi
 echo "--- Stage 3: .gitignore integrity ---"
 FAILED=0
 # Check critical entries
-for pattern in '^\.env$' '^agent/auth\.json$' '^agent/sessions/' '^venv/' '^agent/npm/node_modules/' '^agent/bin/' '^tmp/' '^state/' '^\*\.jsonl$'; do
+for pattern in '^\.env$' '^agent/auth\.json$' '^agent/sessions/' '^venv/' '^agent/npm/node_modules/' '^agent/bin/' '^tmp/' '^\*\.jsonl$'; do
     if grep -vE '^\s*(#|$)' .gitignore | grep -Eq "$pattern" 2>/dev/null; then
         :  # found
     else

@@ -1,7 +1,6 @@
 ---
 description: "Ingest local documentation into RAG and clean index — scan directory, upload all doc files, refresh/clean RAG index"
 argument-hint: "[path] [max-files]"
-model: google/gemini-2.5-flash
 thinking: low
 skill: rag-query
 restore: true

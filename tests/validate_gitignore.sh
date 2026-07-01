@@ -71,7 +71,6 @@ check_active_entry '^venv/'
 check_active_entry '^agent/npm/node_modules/'
 check_active_entry '^agent/bin/'
 check_active_entry '^tmp/'
-check_active_entry '^state/'
 
 # --- Check 10: *.jsonl defense-in-depth (S3, T1.1b) ---
 check_active_entry '^\*\.jsonl$'

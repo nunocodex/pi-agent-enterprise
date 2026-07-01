@@ -34,7 +34,6 @@ Thumbs.db
 
 # === EPHEMERAL WORKSPACE ===
 tmp/
-state/
 
 # === NPM submodule self-ignore (exists at agent/npm/.gitignore) ===
 # agent/npm/.gitignore already covers that directory

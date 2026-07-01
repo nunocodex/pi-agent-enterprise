@@ -83,7 +83,7 @@ jobs:
           echo "Validating .gitignore critical entries..."
           FAILED=0
           # Check critical entries exist (non-comment lines)
-          for pattern in '^\.env$' '^agent/auth\.json$' '^agent/sessions/' '^venv/' '^agent/npm/node_modules/' '^agent/bin/' '^tmp/' '^state/' '^\*\.jsonl$'; do
+          for pattern in '^\.env$' '^agent/auth\.json$' '^agent/sessions/' '^venv/' '^agent/npm/node_modules/' '^agent/bin/' '^tmp/' '^\*\.jsonl$'; do
             if grep -vE '^\s*(#|$)' .gitignore | grep -Eq "$pattern" 2>/dev/null; then
               echo "  ✅ $pattern"
             else
