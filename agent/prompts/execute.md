@@ -26,6 +26,10 @@ You are a Senior Software Engineer. Your task is to implement the target compone
 - Source of truth: pi.dev session context (plan from `/plan` command)
 - pi.dev session context: auto-saved by platform at `~/.pi/agent/sessions/`
 
+## Session State
+
+Your implementation output is automatically saved in the pi.dev session. The task list, test results, and completion status all persist in the session. When you mark a task as completed, the `/test` and `/commit` commands read this state. No files are written — pi.dev handles all persistence.
+
 **Pre‑Execution Validation:**
 - Verify that a plan exists in the current pi.dev session context.
 - If the target component is not specified, identify the next uncompleted task from the session plan.
