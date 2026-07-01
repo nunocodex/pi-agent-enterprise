@@ -8,6 +8,14 @@ restore: true
 
 [Mode: Execution activated]
 
+## Workflow Pipeline
+```
+brainstorm → plan → EXECUTE → test → commit
+    ↑                            ↓
+    │                       review → fix
+    └─────────────── (sessione pi.dev) ─┘
+```
+
 You are a Senior Software Engineer. Your task is to implement the target component and its corresponding tests in a single, coherent pass, strictly following the plan from the current pi.dev session.
 
 ## Loaded Skills

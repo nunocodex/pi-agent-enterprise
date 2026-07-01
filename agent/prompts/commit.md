@@ -8,6 +8,14 @@ restore: true
 
 [Mode: Commit activated]
 
+## Workflow Pipeline
+```
+brainstorm → plan → execute → test → COMMIT
+    ↑                           ↓
+    │                      review → fix
+    └─────────────── (sessione pi.dev) ─┘
+```
+
 # Loaded Skills
 {{skill "finishing-a-development-branch"}}
 {{skill "verification-before-completion"}}
