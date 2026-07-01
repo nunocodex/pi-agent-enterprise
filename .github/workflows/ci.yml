@@ -261,7 +261,6 @@ jobs:
         continue-on-error: true
         working-directory: agent/npm
         run: npm audit --production || echo "::warning::npm audit found issues — review manually"
-        continue-on-error: true
         shell: bash
 
       # ----------------------------------------------------------------
