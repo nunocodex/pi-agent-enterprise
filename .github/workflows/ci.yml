@@ -205,7 +205,8 @@ jobs:
       # ----------------------------------------------------------------
       - name: Markdown lint
         run: |
-          npx -y markdownlint-cli '*.md' 'agent/prompts/*.md' --config .markdownlint.json --ignore-path .markdownlintignore
+          npm install -g markdownlint-cli
+          markdownlint '*.md' 'agent/prompts/*.md' --config .markdownlint.json --ignore-path .markdownlintignore
         shell: bash
         continue-on-error: true
 
@@ -214,6 +215,7 @@ jobs:
       # ----------------------------------------------------------------
       - name: YAML lint
         run: |
+          pip install pyyaml -q
           echo "Validating YAML files..."
           FAILED=0
           for yaml_file in .github/workflows/*.yml .pre-commit-config.yaml; do
